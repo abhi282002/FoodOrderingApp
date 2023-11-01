@@ -7,19 +7,20 @@ class UserClass extends Component {
       count1: 0,
       count2: 1,
     };
+    console.log("UserClass Constructor Method is Called");
   }
 
   componentDidMount() {
-    console.log("Mounted");
+    console.log("User Class Mounted");
   }
 
-  componentDidUpdate() {
-    console.log("updated");
-  }
+  // componentDidUpdate() {
+  //   console.log("updated");
+  // }
 
   render() {
     const { name, contact, city } = this.props;
-
+    console.log("UserClass Is Render");
     return (
       <div>
         <h1>

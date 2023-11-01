@@ -13,6 +13,7 @@ import UserContext from "../utils/UserContext";
 const root = ReactDOM.createRoot(document.querySelector(".root"));
 import { Provider } from "react-redux";
 import appStore from "../utils/appStore";
+import { ThemeContextProvider } from "../utils/ThemeContext";
 const ResturantMenu = lazy(() => import("./components/ResturantMenu"));
 const AppLayout = () => {
   const [userName, setUserName] = useState();
@@ -22,21 +23,34 @@ const AppLayout = () => {
     };
     setUserName(data.name);
   }, []);
+  const [themeMode, setThemeMode] = useState("light");
+  const lightTheme = () => {
+    setThemeMode("light");
+  };
+  const darkTheme = () => {
+    setThemeMode("dark");
+  };
+  useEffect(() => {
+    document.querySelector("html").classList.remove("dark", "light");
+    document.querySelector("html").classList.add(themeMode);
+  }, [themeMode]);
   return (
     <>
-      <Provider store={appStore}>
-        {/* Default Value */}
-        <UserContext.Provider value={{ loggedInUser: userName, setUserName }}>
-          {/*  Abhishek Sharma */}
+      <ThemeContextProvider value={{ themeMode, lightTheme, darkTheme }}>
+        <Provider store={appStore}>
+          {/* Default Value */}
+          <UserContext.Provider value={{ loggedInUser: userName, setUserName }}>
+            {/*  Abhishek Sharma */}
 
-          {/*  Elon Musk  */}
-          <Header></Header>
+            {/*  Elon Musk  */}
+            <Header></Header>
 
-          {/* <UserContext.Provider value={{ loggedInUser: "Elon Musk" }}>*/}
-          <Outlet />
-          {/* </UserContext.Provider>*/}
-        </UserContext.Provider>
-      </Provider>
+            {/* <UserContext.Provider value={{ loggedInUser: "Elon Musk" }}>*/}
+            <Outlet />
+            {/* </UserContext.Provider>*/}
+          </UserContext.Provider>
+        </Provider>
+      </ThemeContextProvider>
     </>
   );
 };

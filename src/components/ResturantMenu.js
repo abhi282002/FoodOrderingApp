@@ -84,7 +84,11 @@ const ResturantMenu = () => {
               key={e?.card?.card?.title}
               items={e?.card?.card}
               Toggle={showIndex === index ? true : false}
-              setShowIndex={() => setShowIndex(index)}
+              setShowIndex={() =>
+                setShowIndex((prevIndex) =>
+                  prevIndex === index ? null : index
+                )
+              }
             />
           );
         })}

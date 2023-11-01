@@ -5,10 +5,14 @@ import apiData from "../../utils/constants";
 import { Link } from "react-router-dom";
 import UserContext from "../../utils/UserContext";
 import { useContext } from "react";
+import useOnlineStatus from "../../utils/useOnlineStatus";
+import { Carousel } from "flowbite-react";
+import { IMG_CDN_URL } from "../../utils/constants";
 const Body = () => {
   const [SearchText, setSearchText] = useState("");
   const [ActualRestaurantList, SetActualRestaurantList] = useState([]);
   const [FilterRestaurantList, SetFilterRestaurantList] = useState([]);
+  const [coursel, SetCoursel] = useState([]);
   const WithLabelPromoted = withLabel(RestaurantCard);
   const [auth, setAuth] = useState(true);
   const HandleAuth = () => {
@@ -18,6 +22,7 @@ const Body = () => {
       setAuth(true);
     }
   };
+  console.log("Before Body Component");
   useEffect(() => {
     fetchData();
   }, []);
@@ -27,13 +32,16 @@ const Body = () => {
       const data = await fetch(apiData);
       const json = await data.json();
       console.log(json);
-      if (!fetchData) {
-        throw Error("Please Check Your Internet Connention");
-      }
+
+      SetCoursel(
+        json.data?.cards[0]?.card?.card?.gridElements?.infoWithStyle?.info
+      );
+
       SetActualRestaurantList(
         json.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
           ?.restaurants
       );
+      console.log(coursel);
       SetFilterRestaurantList(
         json.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
           ?.restaurants
@@ -42,15 +50,22 @@ const Body = () => {
       console.log(error);
     }
   };
-
+  const status = useOnlineStatus();
   const { loggedInUser, setUserName } = useContext(UserContext);
+  if (!status) {
+    return (
+      <div>
+        <h1>Look's Like You're Offline</h1>
+      </div>
+    );
+  }
   return FilterRestaurantList?.length === 0 ? (
     <Shimmer />
   ) : (
     <>
-      <div className="w-full  border-t border-black/5">
-        <div className=" max-w-7xl mx-auto bg-white/80 ">
-          <div className="flex flex-auto gap-4  mt-4 ml-2">
+      <div className="dark:bg-gray-500 dark:text-white/100 w-full  border-t border-black/5">
+        <div className="dark:bg-gray-500 max-w-7xl mx-auto bg-white/80 ">
+          <div className="dark:bg-gray-500 flex flex-auto gap-4  mt-4 ml-2">
             <input
               type="search"
               name="food"
@@ -95,11 +110,32 @@ const Body = () => {
               />
             </div>
           </div>
-
-          <h1 className="mt-6 ml-2 font-bold text-2xl">
+          <div className="dark:bg-gray-500 flex flex-col gap-5 h-[500px] w-[88%] justify-around  md:w-full md:flex-row md:gap-5 md:h-[300px] mx-auto my-10">
+            <Carousel leftControl="" rightControl="">
+              {coursel.map((crousel) => (
+                <img
+                  alt="..."
+                  className="w-full h-full"
+                  key={crousel?.id}
+                  src={IMG_CDN_URL + crousel?.imageId}
+                />
+              ))}
+            </Carousel>
+            <Carousel leftControl="" rightControl="">
+              {coursel.map((crousel) => (
+                <img
+                  alt="..."
+                  className="w-full h-full"
+                  key={crousel?.id}
+                  src={IMG_CDN_URL + crousel?.imageId}
+                />
+              ))}
+            </Carousel>
+          </div>
+          <h1 className="dark:bg-gray-500 mt-6 ml-2 font-bold text-2xl">
             Restaurants with online food delivery in Kolkata
           </h1>
-          <div className=" flex flex-wrap gap-6 mt-6 ml-3 md:flex md:flex-wrap">
+          <div className="dark:bg-gray-500 flex flex-wrap gap-6 mt-6 ml-3 md:flex md:flex-wrap">
             <button className=" border border-black/30 rounded-xl px-2  text-black/75">
               Filter
             </button>
@@ -140,7 +176,7 @@ const Body = () => {
               Less than Rs. 300
             </button>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+          <div className="dark:bg-gray-500 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
             {FilterRestaurantList?.map((resturantItems) => {
               return (
                 <Link

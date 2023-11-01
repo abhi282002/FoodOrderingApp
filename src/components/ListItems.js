@@ -6,7 +6,6 @@ const ListItems = (props) => {
 
   const { title, itemCards } = props?.items;
   let { Toggle, setShowIndex } = props;
-  const [controlToggle, setControlToggle] = useState(Toggle);
 
   function handClick() {
     setShowIndex();
