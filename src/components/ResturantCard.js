@@ -6,7 +6,7 @@ const RestaurantCard = (props) => {
 
   return (
     <div className=" w-full flex flex-col items-center">
-      <div className=" mt-10 w-64 h-72  flex flex-col items-center hover:border rounded-sm hover:border-white/100 hover:shadow-lg">
+      <div className=" mt-10 w-64 h-72  flex flex-col items-center hover:border dark:hover:border-white/5   rounded-sm hover:border-white/100 hover:shadow-lg">
         <div>
           <img
             className=" w-80 h-40 rounded-xl"
@@ -34,7 +34,7 @@ const RestaurantCard = (props) => {
 export const withLabel = (RestaurantCard) => {
   return (props) => {
     return (
-      <div className="w-full flex flex-col items-center">
+      <div className="dark:bg-black w-full flex flex-col items-center">
         <RestaurantCard {...props} />
         <h1 className=" text-center  relative bottom-[158px] right-6 text-white/100  font-black text-lg ml-2">
           {props?.restData?.aggregatedDiscountInfoV3.header}{" "}

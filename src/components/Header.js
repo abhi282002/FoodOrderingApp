@@ -21,7 +21,7 @@ const Header = () => {
   const cartItems = useSelector((store) => store.carts.items);
 
   return (
-    <div className="dark:bg-gray-600 dark:text-white/100 w-full mx-auto shadow-lg  h-20 flex items-center justify-between ">
+    <div className="dark:bg-black/80 dark:text-white/100 w-full mx-auto shadow-lg  h-20 flex items-center justify-between ">
       <div className="flex items-center gap-5 w-[150px]  ml-5">
         <input
           value=""

@@ -9,9 +9,9 @@ const ResturantMenu = () => {
   const { resId } = useParams();
 
   const ResInfo = useResInfo(resId);
-  // console.log(ResInfo);
+
   const [showIndex, setShowIndex] = useState(null);
-  console.log(showIndex);
+ 
   if (ResInfo === null) {
     return <Shimmer></Shimmer>;
   }

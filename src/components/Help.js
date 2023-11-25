@@ -26,6 +26,11 @@ class Help extends Component {
             {({ loggedInUser }) => <h1> User:{loggedInUser}</h1>}
           </UserContext.Consumer>
         </div>
+        <div className="flex gap-5">
+          <input type="text" placeholder="Testing input tag" />
+          <input type="text" placeholder="password" />
+        </div>
+
         <UserClass
           name="Abhishek Sharma"
           contact="837482937"

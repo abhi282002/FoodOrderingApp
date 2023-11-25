@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import { addItem } from "../../utils/cartSlice";
 import { IMG_CDN_URL } from "../../utils/constants";
 const ItemCards = ({ cardItems }) => {
-  console.log(cardItems);
+ 
   const dispatch = useDispatch();
   const handleAddItems = (item) => {
     dispatch(addItem(item));

@@ -1,7 +1,7 @@
 import Avatar from "./Avatar.js";
 
 function Card({ children }) {
-  console.log(children);
+
   return <div className="card">{children}</div>;
 }
 

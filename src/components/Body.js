@@ -6,13 +6,15 @@ import { Link } from "react-router-dom";
 import UserContext from "../../utils/UserContext";
 import { useContext } from "react";
 import useOnlineStatus from "../../utils/useOnlineStatus";
-import { Carousel } from "flowbite-react";
+
 import { IMG_CDN_URL } from "../../utils/constants";
 const Body = () => {
   const [SearchText, setSearchText] = useState("");
   const [ActualRestaurantList, SetActualRestaurantList] = useState([]);
   const [FilterRestaurantList, SetFilterRestaurantList] = useState([]);
-  const [coursel, SetCoursel] = useState([]);
+  const [restuarant, setRestuarant] = useState([]);
+  const [crousel, setCrousel] = useState([]);
+  const [restroChain, setRestroChain] = useState([]);
   const WithLabelPromoted = withLabel(RestaurantCard);
   const [auth, setAuth] = useState(true);
   const HandleAuth = () => {
@@ -22,7 +24,7 @@ const Body = () => {
       setAuth(true);
     }
   };
-  console.log("Before Body Component");
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -32,23 +34,26 @@ const Body = () => {
       const data = await fetch(apiData);
       const json = await data.json();
       console.log(json);
-
-      SetCoursel(
+      setRestuarant(
+        json.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.info
+      );
+      setRestroChain(
+        json.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
+          ?.restaurants
+      );
+      setCrousel(
         json.data?.cards[0]?.card?.card?.gridElements?.infoWithStyle?.info
       );
-
       SetActualRestaurantList(
-        json.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
+        json.data?.cards[5]?.card?.card?.gridElements?.infoWithStyle
           ?.restaurants
       );
-      console.log(coursel);
+
       SetFilterRestaurantList(
-        json.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
+        json.data?.cards[5]?.card?.card?.gridElements?.infoWithStyle
           ?.restaurants
       );
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
   const status = useOnlineStatus();
   const { loggedInUser, setUserName } = useContext(UserContext);
@@ -63,12 +68,13 @@ const Body = () => {
     <Shimmer />
   ) : (
     <>
-      <div className="dark:bg-gray-500 dark:text-white/100 w-full  border-t border-black/5">
-        <div className="dark:bg-gray-500 max-w-7xl mx-auto bg-white/80 ">
-          <div className="dark:bg-gray-500 flex flex-auto gap-4  mt-4 ml-2">
+      <div className="dark:bg-black/80 dark:text-white/100 w-full  border-t border-black/5">
+        <div className="dark:bg-black/10 max-w-7xl mx-auto bg-white/80 ">
+          <div className=" flex flex-auto gap-4  mt-4 ml-2">
             <input
               type="search"
               name="food"
+              placeholder="food"
               className=" py-1 px-5 w-80 border rounded-xl border-blue-300  focus:outline-none focus:shadow-outline"
               value={SearchText}
               onChange={(e) => {
@@ -97,7 +103,7 @@ const Body = () => {
                 {auth ? "LogIn" : "LogOut"}
               </button>
             </div>
-            <div>
+            <div className="">
               {/** How to update loggedInUser(UserContext) */}
               <label className="mr-1">UserName:</label>
               <input
@@ -110,32 +116,56 @@ const Body = () => {
               />
             </div>
           </div>
-          <div className="dark:bg-gray-500 flex flex-col gap-5 h-[500px] w-[88%] justify-around  md:w-full md:flex-row md:gap-5 md:h-[300px] mx-auto my-10">
-            <Carousel leftControl="" rightControl="">
-              {coursel.map((crousel) => (
-                <img
-                  alt="..."
-                  className="w-full h-full"
-                  key={crousel?.id}
-                  src={IMG_CDN_URL + crousel?.imageId}
-                />
-              ))}
-            </Carousel>
-            <Carousel leftControl="" rightControl="">
-              {coursel.map((crousel) => (
-                <img
-                  alt="..."
-                  className="w-full h-full"
-                  key={crousel?.id}
-                  src={IMG_CDN_URL + crousel?.imageId}
-                />
-              ))}
-            </Carousel>
+          <div className="dark:bg-transparent flex flex-col  gap-5 overflow-hidden w-full justify-around  md:w-full  md:gap-5 min-h-[337px] mx-auto my-10">
+            <div className=" h-[390px] overflow-hidden  ">
+              <h1 className="font-bold text-4xl pb-2 pl-2">
+                Best offers for you
+              </h1>
+              <div className="flex overflow-x-scroll h-[400px]  gap-4">
+                {crousel.map((crouse) => (
+                  <img
+                    alt="..."
+                    className="h-[300px] w-[88%]"
+                    key={crouse?.id}
+                    src={IMG_CDN_URL + crouse?.imageId}
+                  />
+                ))}
+              </div>
+            </div>
+            <div className="dark:bg-transparent overflow-hidden mt-5 h-[220px] w-full">
+              <h1 className="font-bold text-4xl pb-2 pl-2">
+                whats_on_your_mind
+              </h1>
+
+              <div className="flex rounded-xl overflow-x-scroll  w-[102%]  h-[220px]">
+                {restuarant?.map((resturantItems) => {
+                  return (
+                    <img
+                      alt="..."
+                      className="h-[200px] w-[88%]"
+                      key={resturantItems?.id}
+                      src={IMG_CDN_URL + resturantItems?.imageId}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+            <div className="dark:bg-transparent overflow-hidden mt-5 h-[330px] w-full">
+              <h1 className="font-bold text-3xl pb-2 pl-2">
+                Top restaurant chains in Kolkata
+              </h1>
+
+              <div className="flex rounded-xl gap-4 overflow-x-scroll  w-[102%]  h-[337px]">
+                {restroChain?.map((resturantItems) => {
+                  return <RestaurantCard restData={resturantItems.info} />;
+                })}
+              </div>
+            </div>
           </div>
-          <h1 className="dark:bg-gray-500 mt-6 ml-2 font-bold text-2xl">
+          <h1 className=" mt-6 ml-2 font-bold text-2xl">
             Restaurants with online food delivery in Kolkata
           </h1>
-          <div className="dark:bg-gray-500 flex flex-wrap gap-6 mt-6 ml-3 md:flex md:flex-wrap">
+          <div className="flex flex-wrap gap-6 mt-6 ml-3 md:flex md:flex-wrap">
             <button className=" border border-black/30 rounded-xl px-2  text-black/75">
               Filter
             </button>
@@ -176,7 +206,7 @@ const Body = () => {
               Less than Rs. 300
             </button>
           </div>
-          <div className="dark:bg-gray-500 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+          <div className="dark:bg-black/80 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
             {FilterRestaurantList?.map((resturantItems) => {
               return (
                 <Link

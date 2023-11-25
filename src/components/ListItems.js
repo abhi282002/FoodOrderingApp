@@ -2,7 +2,7 @@ import { useState } from "react";
 import ItemCards from "./ItemCardList";
 
 const ListItems = (props) => {
-  // console.log(props.items);
+
 
   const { title, itemCards } = props?.items;
   let { Toggle, setShowIndex } = props;
